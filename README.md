@@ -96,7 +96,7 @@ Sixth,calculate the gap between two lines center and car's position
 
 I implemented this step in lines 311 through 328 in my code in `./example/run.py` in the function `process_image()`.  Here is an example of my result on a test image:
 
-![alt text](./examples/94394702.png)
+![alt text](./examples/finily.png)
 
 ---
 

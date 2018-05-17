@@ -275,7 +275,7 @@ def find_line(binary_warped, left_fit, right_fit):
     y_eval = np.max(ploty)
 
     ym_per_pix = 30 / 720  # meters per pixel in y dimension
-    xm_per_pix = 3.7 / 600  # meters per pixel in x dimension
+    xm_per_pix = 3.7 / 900  # meters per pixel in x dimension
 
     # Fit new polynomials to x,y in world space
     left_fit_cr = np.polyfit(lefty * ym_per_pix, leftx * xm_per_pix, 2)
@@ -288,7 +288,7 @@ def find_line(binary_warped, left_fit, right_fit):
     h = y_eval
     left_line_x = left_fit[0] * h ** 2 + left_fit[1] * h + left_fit[2]
     right_line_x = right_fit[0] * h ** 2 + right_fit[1] * h + right_fit[2]
-    left_center = abs(abs(left_line_x - right_line_x) / 2 - 1280 / 2) * xm_per_pix
+    left_center = abs(abs(left_line_x + right_line_x) / 2 - 1280 / 2) * xm_per_pix
     # plt.plot(left_fitx, ploty, color='yellow')
     # plt.plot(right_fitx, ploty, color='yellow')
     return window_img, left_curverad, right_curverad, left_center, out_img
@@ -318,10 +318,11 @@ def process_image(img):
     line_img = inverseTransform(img, window_img, Minv)
     img = cv2.addWeighted(img, 1, line_img, 0.7, 0)
     img = cv2.putText(img,
-                      'Radius of Curverad : Left = ' + str(int(left_curverad)) + ',Right =' + str(int(right_curverad)),
+                      'Radius of Curverad : Left = ' + str(int(left_curverad)) + '(m),Right =' + str(int(right_curverad))+'(m)',
                       (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1.,
                       (255, 255, 255), 2)
-    img = cv2.putText(img, 'Vehicle is ' + str(int(left_center)) + 'm left of center', (50, 150), cv2.FONT_HERSHEY_SIMPLEX,
+    img = cv2.putText(img, 'Vehicle is ' + str(round(
+        left_center,2)) + 'm left of center', (50, 150), cv2.FONT_HERSHEY_SIMPLEX,
                       1.,
                       (255, 255, 255), 2)
 
